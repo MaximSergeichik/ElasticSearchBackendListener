@@ -1,0 +1,1 @@
+This project is the plugion for JMeter 3.1 which provides the functionality to send Sample results data to elasticsearch
