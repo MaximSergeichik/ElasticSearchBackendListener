@@ -2,12 +2,13 @@ package com;
 
 import java.util.List;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.jmeter.config.Arguments;
 import org.apache.jmeter.samplers.SampleResult;
 import org.apache.jmeter.visualizers.backend.AbstractBackendListenerClient;
 import org.apache.jmeter.visualizers.backend.BackendListenerContext;
-import org.slf4j.*;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class BackendListener extends AbstractBackendListenerClient 
@@ -24,6 +25,23 @@ public class BackendListener extends AbstractBackendListenerClient
 	@Override
 	public void setupTest(BackendListenerContext arg1)
 	{
+		LOGGER.info("BackendListener initialization");
+		String host = arg1.getParameter(ES_HOST);
+		String protocol = arg1.getParameter(ES_PROTOCOL);
+		String port = arg1.getParameter(ES_PROTOCOL);
+		
+		try {
+			if (Util.ping(protocol+"://"+host+":"+port))
+			{
+				LOGGER.info("BackendListener initialization successful");
+			} else {
+				LOGGER.info("BackendListener initialization failed");
+			}
+		} catch(Exception e)
+		{
+			LOGGER.error(ExceptionUtils.getStackTrace(e));
+			LOGGER.info("BackendListener initialization failed");
+		}
 		
 	}
 	
@@ -34,8 +52,8 @@ public class BackendListener extends AbstractBackendListenerClient
 		par.addArgument(ES_PROTOCOL, "http");
 		par.addArgument(ES_HOST, "localhost");
 		par.addArgument(ES_PORT, "9200");
-		par.addArgument(ES_INDEX, "_jmeter");
-		par.addArgument(ES_DOC, "_test");
+		par.addArgument(ES_INDEX, "jmeter");
+		par.addArgument(ES_DOC, "test");
 		par.addArgument(JMETER_RESPONSE, "false");
 		
 		
@@ -57,6 +75,7 @@ public class BackendListener extends AbstractBackendListenerClient
 			catch(Exception ex)
 			{
 				LOGGER.error(ex.getMessage());
+				LOGGER.error(ExceptionUtils.getStackTrace(ex));
 			}
 		}
 	}

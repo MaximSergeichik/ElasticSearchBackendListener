@@ -1,65 +1,36 @@
 package com;
 
-import org.json.*;
-import org.apache.jmeter.samplers.SampleResult;
-
-import java.io.IOException;
-import java.net.URL;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.net.URL;
+
+import org.apache.jmeter.samplers.SampleResult;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 
 
 public class Util {
 
-	public static boolean sendJSON(String uri, String index, String doc, String body, Logger LOGGER)
+	public static void sendJSON(String uri, String index, String doc, String body, Logger LOGGER)
 	{
-		URL url;
-		try {
-			url = new URL(uri+"/"+index+"/"+doc);
-			HttpURLConnection connection;
-			connection = (HttpURLConnection)url.openConnection();
-			
-			connection.setDoOutput(true);
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type", "application/json");
-			
-			BufferedWriter requestWriter = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-			requestWriter.write(body);
-			requestWriter.close();
-			
-			String response = "";
-			BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			while (responseReader.readLine() != null)
-			{
-				response += responseReader.readLine();
-			}
-			responseReader.close();
-			
-			if (response.contains("\"result\" : \"created\""))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			LOGGER.info(body);
+		Runnable r = new SendData(uri, index, doc, body, LOGGER);
+		new Thread(r).start();
+		
+	}
+	
+	public static boolean ping(String uri) throws Exception 
+	{
+		URL url = new URL(uri);
+		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+		connection.setRequestMethod("HEAD");
+		int response_code = connection.getResponseCode();
+		if (response_code == HttpURLConnection.HTTP_OK)
+		{
+			return true;
 		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			LOGGER.info(body);
+		else
+		{
+			return false;
 		}
-		return false;
 	}
 	
 	public static String getJsonFromSample(SampleResult sample, String saveResponse)
