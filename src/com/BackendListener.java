@@ -25,6 +25,7 @@ public class BackendListener extends AbstractBackendListenerClient
 	private static String ES_DOC = "es.document";
 	private static String JMETER_RESPONSE = "saveResponseData";
 	private static Integer COUNT_OF_RETRIES = 5;
+	private static long SLEEP_TIME=10000;
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(BackendListener.class);
 	
@@ -39,16 +40,16 @@ public class BackendListener extends AbstractBackendListenerClient
 		try {
 			if (WorkWithServer.doHead(protocol+"://"+host+":"+port, LOGGER))
 			{
-				LOGGER.info("ElasticSearch server is available");
+				LOGGER.error("ElasticSearch server is available");
 			} else {
-				LOGGER.info("BackendListener initialization failed");
+				LOGGER.error("BackendListener initialization failed");
 			}
 		} catch(Exception e)
 		{
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			LOGGER.info("BackendListener initialization failed");
+			LOGGER.error("BackendListener initialization failed");
 		}
-		LOGGER.info("BackendListener initialization successful");
+		LOGGER.error("BackendListener initialization successful");
 		
 	}
 	
@@ -88,6 +89,12 @@ public class BackendListener extends AbstractBackendListenerClient
 			else
 			{
 				j++;
+				try {
+					Thread.sleep(SLEEP_TIME);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					LOGGER.error(ExceptionUtils.getStackTrace(e));
+				}
 			}
 		}
 	}
