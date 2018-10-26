@@ -1,38 +1,11 @@
 package com;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import org.apache.jmeter.samplers.SampleResult;
 import org.json.JSONObject;
-import org.slf4j.Logger;
+
 
 
 public class Util {
-
-	public static void sendJSON(String uri, String index, String doc, String body, Logger LOGGER)
-	{
-		Runnable r = new SendData(uri, index, doc, body, LOGGER);
-		new Thread(r).start();
-		
-	}
-	
-	public static boolean ping(String uri) throws Exception 
-	{
-		URL url = new URL(uri);
-		HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-		connection.setRequestMethod("HEAD");
-		int response_code = connection.getResponseCode();
-		if (response_code == HttpURLConnection.HTTP_OK)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
 	public static String getJsonFromSample(SampleResult sample, String saveResponse)
 	{
 		
