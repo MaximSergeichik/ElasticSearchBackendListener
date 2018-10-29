@@ -1,11 +1,6 @@
 package com;
 
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.jmeter.config.Arguments;
@@ -24,7 +19,7 @@ public class BackendListener extends AbstractBackendListenerClient
 	private static String ES_INDEX = "ex.index";
 	private static String ES_DOC = "es.document";
 	private static String JMETER_RESPONSE = "saveResponseData";
-	private static Integer COUNT_OF_RETRIES = 5;
+	private static String COUNT_OF_ATTEMPTS = "attemptsCount";
 	private static long SLEEP_TIME=10000;
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(BackendListener.class);
@@ -35,12 +30,12 @@ public class BackendListener extends AbstractBackendListenerClient
 		LOGGER.info("BackendListener initialization");
 		String host = arg1.getParameter(ES_HOST);
 		String protocol = arg1.getParameter(ES_PROTOCOL);
-		String port = arg1.getParameter(ES_PROTOCOL);
+		String port = arg1.getParameter(ES_PORT);
 		
 		try {
 			if (WorkWithServer.doHead(protocol+"://"+host+":"+port, LOGGER))
 			{
-				LOGGER.error("ElasticSearch server is available");
+				LOGGER.info("ElasticSearch server is available");
 			} else {
 				LOGGER.error("BackendListener initialization failed");
 			}
@@ -49,7 +44,7 @@ public class BackendListener extends AbstractBackendListenerClient
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
 			LOGGER.error("BackendListener initialization failed");
 		}
-		LOGGER.error("BackendListener initialization successful");
+		LOGGER.info("BackendListener initialization successful");
 		
 	}
 	
@@ -63,6 +58,7 @@ public class BackendListener extends AbstractBackendListenerClient
 		par.addArgument(ES_INDEX, "jmeter");
 		par.addArgument(ES_DOC, "test");
 		par.addArgument(JMETER_RESPONSE, "false");
+		par.addArgument(COUNT_OF_ATTEMPTS, "1");
 		
 		
 		return par;
@@ -80,8 +76,10 @@ public class BackendListener extends AbstractBackendListenerClient
 			body+=action+"\n"+json+"\n";	
 		}
 		String url = arg1.getParameter(ES_PROTOCOL)+"://"+arg1.getParameter(ES_HOST)+":"+arg1.getParameter(ES_PORT)+"/"+arg1.getParameter(ES_INDEX)+"/_bulk";
+		
 		int j=0;
-		while(j<COUNT_OF_RETRIES){
+		int count = arg1.getIntParameter(COUNT_OF_ATTEMPTS);
+		while(j<count){
 			if(WorkWithServer.doPost(url, body, LOGGER))
 			{
 				break;

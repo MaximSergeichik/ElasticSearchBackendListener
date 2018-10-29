@@ -26,6 +26,7 @@ public class Util {
 		json.put("SentBytes", sample.getSentBytes());
 		json.put("ReceivedBytes", sample.getBodySizeAsLong());
 		json.put("DataType", sample.getDataType());
+				
 		if (saveResponse.toLowerCase().equals("true"))
 		{
 			json.put("ResponseData", sample.getResponseDataAsString());

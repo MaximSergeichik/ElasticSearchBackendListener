@@ -29,12 +29,16 @@ public class WorkWithServer{
 			requestWriter.write(body);
 			requestWriter.close();
 			
-			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK)
+			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == HttpURLConnection.HTTP_CREATED)
 			{
+				LOGGER.info("Request successfully completed");
 				return true;
 			}
 			else
 			{
+				LOGGER.error("Request returned "+connection.getResponseCode()+" response code!");
+				LOGGER.info("Requested URL: " + uri);
+				LOGGER.info("Request body: "+body);
 				return false;
 			}
 			//String response = "";
@@ -48,12 +52,14 @@ public class WorkWithServer{
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			LOGGER.info("request body: "+body);
+			LOGGER.info("Requested url:" + uri);
+			LOGGER.info("Request body: " + body);
 		}
 		catch (IOException e) {
 			// TODO Auto-generated catch block
 			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			LOGGER.info("request body: "+body);
+			LOGGER.info("Requested url:" + uri);
+			LOGGER.info("Request body: " + body);
 		}
 		return false;
 	}
