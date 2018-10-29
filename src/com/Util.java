@@ -1,12 +1,26 @@
 package com;
 
 import org.apache.jmeter.samplers.SampleResult;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 
+import net.minidev.json.*;
 
 
 public class Util {
-	public static String getJsonFromSample(SampleResult sample, String saveResponse)
+	
+	private static boolean isTransaction(String responseMessage)
+	{
+		if (responseMessage.contains("transaction"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public static String getJsonFromSample(SampleResult sample, String saveResponse, String project)
 	{
 		
 		JSONObject json = new JSONObject();
@@ -26,6 +40,8 @@ public class Util {
 		json.put("SentBytes", sample.getSentBytes());
 		json.put("ReceivedBytes", sample.getBodySizeAsLong());
 		json.put("DataType", sample.getDataType());
+		json.put("Project", project);
+		json.put("IsTransaction", isTransaction(sample.getResponseMessage()));
 				
 		if (saveResponse.toLowerCase().equals("true"))
 		{

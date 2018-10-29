@@ -21,6 +21,7 @@ public class BackendListener extends AbstractBackendListenerClient
 	private static String JMETER_RESPONSE = "saveResponseData";
 	private static String COUNT_OF_ATTEMPTS = "attemptsCount";
 	private static long SLEEP_TIME=10000;
+	private static String PROJECT = "projectField";
 	
 	private static Logger LOGGER = LoggerFactory.getLogger(BackendListener.class);
 	
@@ -59,7 +60,7 @@ public class BackendListener extends AbstractBackendListenerClient
 		par.addArgument(ES_DOC, "test");
 		par.addArgument(JMETER_RESPONSE, "false");
 		par.addArgument(COUNT_OF_ATTEMPTS, "1");
-		
+		par.addArgument(PROJECT, "");
 		
 		return par;
 	}
@@ -71,7 +72,7 @@ public class BackendListener extends AbstractBackendListenerClient
 		for(int i=0;i<arg0.size();i++)
 		{
 			SampleResult sample = arg0.get(i);
-			String json = Util.getJsonFromSample(sample, arg1.getParameter(JMETER_RESPONSE));
+			String json = Util.getJsonFromSample(sample, arg1.getParameter(JMETER_RESPONSE), arg1.getParameter(PROJECT));
 			String action = "{\"index\": {\"_type\":\""+arg1.getParameter(ES_DOC)+"\"}}";
 			body+=action+"\n"+json+"\n";	
 		}

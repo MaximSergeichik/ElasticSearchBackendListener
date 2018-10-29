@@ -2,23 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="D:/Perfomance/Jmeter_To_ElasticSearch/ElasticSearchBackendListener/lib/org.slf4j.jar"/>
 	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_components.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_monitors.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_native.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_core.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_ftp.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_functions.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_http.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_java.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_jdbc.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_jms.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_junit.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_ldap.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_mail.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_mongodb.jar"/>
-	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_tcp.jar"/>
-	<classpathentry exported="true" kind="lib" path="D:/Perfomance/Jmeter_To_ElasticSearch/ElasticSearchBackendListener/lib/json-20180813.jar"/>
 	<classpathentry exported="true" kind="lib" path="D:/Java/apache-jmeter-3.1/lib/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/json-smart-2.2.1.jar"/>
+	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/slf4j-api-1.7.21.jar"/>
+	<classpathentry kind="lib" path="D:/Java/apache-jmeter-3.1/lib/ext/ApacheJMeter_core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
