@@ -17,8 +17,6 @@ curl -X PUT "http://{es_host}:{es_port}/{index_name}" -H 'Content-Type: applicat
 	}
 }'
 
-This plugin requires only 2 external jars: org.slf4j and json-20180813 which you can find in lib folder.
-Just put them in lib/ext folder of your jmeter with backendListener.jar.
 
 Usage:
 -add backendListener.jar to lib/ext of your jmeter.
