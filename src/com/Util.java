@@ -1,17 +1,38 @@
 package com;
 
 import org.apache.jmeter.samplers.SampleResult;
-//import org.json.JSONObject;
+import org.slf4j.Logger;
 
 import net.minidev.json.*;
 
 
 public class Util {
 	
-	private static boolean isTransaction(String responseMessage)
+	private static Logger LOGGER;
+	
+	enum LogLevel{
+		info,
+		error
+	}
+	
+	public static void setLogger(Logger l)
 	{
-		if (responseMessage.contains("transaction"))
+		LOGGER = l;
+	}
+	
+	public static void writeLog(String message, LogLevel logLevel)
+	{
+		switch (logLevel)
 		{
+		case info : {LOGGER.info(message); break;}
+		case error: {LOGGER.error(message); break;}
+		}
+	}
+	
+	private static boolean isTransaction(SampleResult sample)
+	{
+		if (!sample.getClass().getSimpleName().contains("HTTP"))
+		{	
 			return true;
 		}
 		else
@@ -20,7 +41,7 @@ public class Util {
 		}
 	}
 	
-	public static String getJsonFromSample(SampleResult sample, String saveResponse, String project)
+	public static String getJsonFromSample(SampleResult sample, boolean saveResponse, String project)
 	{
 		
 		JSONObject json = new JSONObject();
@@ -41,9 +62,10 @@ public class Util {
 		json.put("ReceivedBytes", sample.getBodySizeAsLong());
 		json.put("DataType", sample.getDataType());
 		json.put("Project", project);
-		json.put("IsTransaction", isTransaction(sample.getResponseMessage()));
+		json.put("IsTransaction", isTransaction(sample));
 				
-		if (saveResponse.toLowerCase().equals("true"))
+		
+		if (saveResponse)
 		{
 			json.put("ResponseData", sample.getResponseDataAsString());
 		}

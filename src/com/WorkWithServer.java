@@ -8,12 +8,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
+
 
 public class WorkWithServer{
 
 	
-	public static boolean doPost(String uri, String body, Logger LOGGER)
+	public static boolean doPost(String uri, String body)
 	{
 		URL url;
 		try {
@@ -31,40 +31,31 @@ public class WorkWithServer{
 			
 			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == HttpURLConnection.HTTP_CREATED)
 			{
-				LOGGER.info("Request successfully completed");
+				Util.writeLog("Request successfully completed", Util.LogLevel.info);
 				return true;
 			}
 			else
 			{
-				LOGGER.error("Request returned "+connection.getResponseCode()+" response code!");
-				LOGGER.info("Requested URL: " + uri);
-				LOGGER.info("Request body: "+body);
+				Util.writeLog("Request returned "+connection.getResponseCode()+" response code!", Util.LogLevel.error);
+				Util.writeLog("Requested url: "+uri, Util.LogLevel.info);
+				Util.writeLog("Request body: "+body, Util.LogLevel.info);
 				return false;
-			}
-			//String response = "";
-			//BufferedReader responseReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			//while (responseReader.readLine() != null)
-			//{
-//				response += responseReader.readLine();
-			//}
-			//responseReader.close();			
+			}		
 			
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			LOGGER.info("Requested url:" + uri);
-			LOGGER.info("Request body: " + body);
+			Util.writeLog(ExceptionUtils.getStackTrace(e), Util.LogLevel.error);
+			Util.writeLog("Requested url: "+uri, Util.LogLevel.info);
+			Util.writeLog("Request body: "+body, Util.LogLevel.info);
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
-			LOGGER.error(ExceptionUtils.getStackTrace(e));
-			LOGGER.info("Requested url:" + uri);
-			LOGGER.info("Request body: " + body);
+			Util.writeLog(ExceptionUtils.getStackTrace(e), Util.LogLevel.error);
+			Util.writeLog("Requested url: "+uri, Util.LogLevel.info);
+			Util.writeLog("Request body: "+body, Util.LogLevel.info);
 		}
 		return false;
 	}
 	
-	public static boolean doGet(String uri, Logger LOGGER)
+	public static boolean doGet(String uri)
 	{
 		try
 		{
@@ -81,12 +72,12 @@ public class WorkWithServer{
 			}
 		} catch (Exception e)
 		{
-			LOGGER.error(ExceptionUtils.getStackTrace(e));
+			Util.writeLog(ExceptionUtils.getStackTrace(e), Util.LogLevel.error);
 			return false;
 		}
 	}
 	
-	public static boolean doHead(String uri, Logger LOGGER)
+	public static boolean doHead(String uri)
 	{
 		try
 		{
@@ -104,7 +95,7 @@ public class WorkWithServer{
 			}
 		} catch (Exception e)
 		{
-			LOGGER.error(ExceptionUtils.getStackTrace(e));
+			Util.writeLog(ExceptionUtils.getStackTrace(e), Util.LogLevel.error);
 		}
 		return false;
 	}
