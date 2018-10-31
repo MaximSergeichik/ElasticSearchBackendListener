@@ -3,51 +3,38 @@ package com;
 import org.apache.jmeter.samplers.SampleResult;
 import org.slf4j.Logger;
 
-import net.minidev.json.*;
-
+import net.minidev.json.JSONObject;
 
 public class Util {
-	
-	private static Logger LOGGER;
-	
-	enum LogLevel{
-		info,
-		error
+
+	private Util() {
 	}
-	
-	public static void setLogger(Logger l)
-	{
-		LOGGER = l;
+
+	enum LogLevel {
+		info, error
 	}
-	
-	public static void writeLog(String message, LogLevel logLevel)
-	{
-		switch (logLevel)
-		{
-		case info : {LOGGER.info(message); break;}
-		case error: {LOGGER.error(message); break;}
+
+	public static void writeLog(String message, LogLevel logLevel, Logger LOGGER) {
+		switch (logLevel) {
+		case info: {
+			LOGGER.info(message);
+			break;
+		}
+		case error: {
+			LOGGER.error(message);
+			break;
+		}
 		}
 	}
-	
-	private static boolean isTransaction(SampleResult sample)
-	{
-		if (!sample.getClass().getSimpleName().contains("HTTP"))
-		{	
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+
+	private static boolean isTransaction(SampleResult sample) {
+		return !(sample instanceof org.apache.jmeter.protocol.http.sampler.HTTPSampleResult);
 	}
-	
-	public static String getJsonFromSample(SampleResult sample, boolean saveResponse, String project)
-	{
-		
+
+	public static String getJsonFromSample(SampleResult sample, boolean saveResponse, String project) {
 		JSONObject json = new JSONObject();
 		json.put("TransactionName", sample.getSampleLabel());
-		long responseTime = sample.getEndTime()-sample.getStartTime();
-		json.put("ResponseTime", responseTime);
+		json.put("ResponseTime", sample.getTime());
 		json.put("ConnectTime", sample.getConnectTime());
 		json.put("IdleTime", sample.getIdleTime());
 		json.put("RequestHeaders", sample.getRequestHeaders());
@@ -63,15 +50,13 @@ public class Util {
 		json.put("DataType", sample.getDataType());
 		json.put("Project", project);
 		json.put("IsTransaction", isTransaction(sample));
-				
-		
-		if (saveResponse)
-		{
+
+		if (saveResponse) {
 			json.put("ResponseData", sample.getResponseDataAsString());
 		}
-		
+
 		String result = json.toString();
 		return result;
 	}
-	
+
 }
