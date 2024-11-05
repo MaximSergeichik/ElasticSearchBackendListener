@@ -29,7 +29,29 @@ env:
   JAVA_VERSION: '8'                         # set this to the java version to use (e.g. '8', '11', '17')
 
 jobs:
-  build-and-deploy:
+  build:
+    runs-on: windows-latest # For Linux, use ubuntu-latest
+    environment: dev
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v4
+
+    - name: 'Restore Project Dependencies Using Mvn'
+      shell: pwsh # For Linux, use bash
+      run: printenv
+
+  deploy_HQ_PROD:
+    runs-on: windows-latest # For Linux, use ubuntu-latest
+    environment: dev
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v4
+
+    - name: 'Restore Project Dependencies Using Mvn'
+      shell: pwsh # For Linux, use bash
+      run: printenv
+
+  deploy_BOROUGE_PROD:
     runs-on: windows-latest # For Linux, use ubuntu-latest
     environment: dev
     steps:
